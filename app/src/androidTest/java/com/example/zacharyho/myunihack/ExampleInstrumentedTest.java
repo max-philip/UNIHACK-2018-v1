@@ -1,4 +1,4 @@
-package com.example.nicholas.unihack_2018_1;
+package com.example.zacharyho.myunihack;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.nicholas.unihack_2018_1", appContext.getPackageName());
+        assertEquals("com.example.zacharyho.myunihack", appContext.getPackageName());
     }
 }

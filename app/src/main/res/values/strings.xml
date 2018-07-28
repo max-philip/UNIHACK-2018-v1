@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">UNIHACK_2018_1</string>
+    <string name="app_name">SafeWay</string>
+    <string name="query_feature_marker_title">Location</string>
+    <string name="query_feature_marker_snippet">Description</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
