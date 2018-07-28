@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class AStar {
 
-    /** Keep unsafety scalar between 1-20 to prevent less than 0 hcost **/
-    private static final double UNSAFETY_SCALAR = 0;
+    /** Reasonable min/max for this scalar between 0 - 2000. **/
+    private static final double UNSAFETY_SCALAR = 1500;
     private static final double HCOST_CONSTANT = 100;
     private static final double EARTH_RADIUS_M = 6371000;
 
@@ -32,7 +32,8 @@ public class AStar {
      * @param goal
      * @return
      */
-    public static Coordinate[] getBestPath(Coordinate start, Coordinate goal) {
+//    public static Coordinate[] getBestPath(Coordinate start, Coordinate goal) {
+    public static String[] getBestPath(Coordinate start, Coordinate goal) {
         AStar.start = getClosestIntersection(start);
         AStar.goal = getClosestIntersection(goal);
 
@@ -88,7 +89,7 @@ public class AStar {
         RoadInfo roadInfo = DataParser.roads.get(generateRoadID(from, to));
 
         double dist = getDistanceAsMetres(from.getCoordinate(), to.getCoordinate());
-        return dist + UNSAFETY_SCALAR * (roadInfo.crime + roadInfo.parks - roadInfo.safety - roadInfo.lights);
+        return Math.max(dist + UNSAFETY_SCALAR * (roadInfo.crime + roadInfo.parks - roadInfo.safety - roadInfo.lights), 0);
 
     }
 
@@ -115,22 +116,40 @@ public class AStar {
         return lowestIntersection;
     }
 
-    /**
-     * Given an ending coordinate, reconstructs the path from 'start' to it, returning the shortest path.
-     * @param end is the ending coordinate.
-     * @return a list of sequential coordinates leading from 'start' to 'end'.
-     */
-    private static Coordinate[] reconstructPath(Intersection end) {
-        ArrayList<Coordinate> path = new ArrayList<>();
-        path.add(AStar.goal.getCoordinate());
+//    /**
+//     * Given an ending coordinate, reconstructs the path from 'start' to it, returning the shortest path.
+//     * @param end is the ending coordinate.
+//     * @return a list of sequential coordinates leading from 'start' to 'end'.
+//     */
+//    private static Coordinate[] reconstructPath(Intersection end) {
+//        ArrayList<Coordinate> path = new ArrayList<>();
+//        path.add(AStar.goal.getCoordinate());
+//        Intersection current = goal;
+//        while (cameFrom.containsKey(current)) {
+//            current = cameFrom.get(current);
+//            path.add(current.getCoordinate());
+//        }
+//
+//        Collections.reverse(path);
+//        return path.toArray(new Coordinate[0]);
+//    }
+
+
+//     * Given an ending coordinate, reconstructs the path from 'start' to it, returning the shortest path.
+//     * @param end is the ending coordinate.
+//     * @return a list of sequential coordinates leading from 'start' to 'end'.
+//     */
+    private static String[] reconstructPath(Intersection end) {
+        ArrayList<String> path = new ArrayList<>();
+        path.add(AStar.goal.debugNum);
         Intersection current = goal;
         while (cameFrom.containsKey(current)) {
             current = cameFrom.get(current);
-            path.add(current.getCoordinate());
+            path.add(current.debugNum);
         }
 
         Collections.reverse(path);
-        return path.toArray(new Coordinate[0]);
+        return path.toArray(new String[0]);
     }
 
     /**

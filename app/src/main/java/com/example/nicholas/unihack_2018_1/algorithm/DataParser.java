@@ -17,6 +17,7 @@ public class DataParser {
     private static final String LATITUDE_KEY = "lat";
     private static final String LONGITUDE_KEY = "long";
     private static final String NEIGHBORS_KEY = "neighbours";
+    private static final String DEBUG_NUM_KEY = "debug-num";
 
     private static final String CRIME_KEY  = "crime";
     private static final String ELEVATION_KEY  = "elevation";
@@ -53,6 +54,9 @@ public class DataParser {
 
             Intersection newIntesection = new Intersection(latitude, longitude);
 
+            // For debugging.
+            newIntesection.debugNum = ((Long) nextIntersection.child(DEBUG_NUM_KEY).getValue()).toString();
+
             // Get list of neighbors.
             ArrayList<String> neigbors = (ArrayList<String>) nextIntersection.child(NEIGHBORS_KEY).getValue();
             for (String neighborId : neigbors) {
@@ -67,7 +71,7 @@ public class DataParser {
 
             intersections.put(newIntesection.getId(), newIntesection);
             count++;
-            Log.d("Num of intersections read in:", Integer.toString(count));
+            Log.d("Num of points read in:", Integer.toString(count));
         }
 
         Log.d("Finished:", "Reading intersections");

@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Intersection {
+    public String debugNum;
+
     private final String latitude;
     private final String longitude;
     private Map<String, Intersection> neighbors = new HashMap<>();
