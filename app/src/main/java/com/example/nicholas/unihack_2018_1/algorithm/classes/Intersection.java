@@ -14,12 +14,12 @@ public class Intersection {
         this.longitude = longitude;
     }
 
-    public float getLatitudeAsFloat() {
-        return Float.parseFloat(latitude);
+    public double getLatitudeAsDouble() {
+        return Double.parseDouble(latitude);
     }
 
-    public float getLongitudeAsFloat() {
-        return Float.parseFloat(longitude);
+    public double getLongitudeAsDouble() {
+        return Double.parseDouble(longitude);
     }
 
     public String getLatitudeAsString() {
@@ -28,6 +28,10 @@ public class Intersection {
 
     public String getLongitudeAsString() {
         return longitude;
+    }
+
+    public Coordinate getCoordinate() {
+        return new Coordinate(this.getLatitudeAsDouble(), this.getLongitudeAsDouble());
     }
 
     public Intersection getNeighbor(String id) {

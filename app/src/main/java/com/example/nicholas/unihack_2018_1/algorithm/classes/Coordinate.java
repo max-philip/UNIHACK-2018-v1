@@ -5,19 +5,19 @@ package com.example.nicholas.unihack_2018_1.algorithm.classes;
  */
 public class Coordinate {
 
-    final float latitude;
-    final float longitude;
+    private final double latitude;
+    private final double longitude;
 
-    public Coordinate(float latitude, float longitude) {
+    public Coordinate(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
