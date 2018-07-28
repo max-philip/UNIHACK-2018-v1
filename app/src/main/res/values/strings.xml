@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Unihack</string>
+    <string name="query_feature_marker_title">Title</string>
+    <string name="query_feature_marker_snippet">Snippet</string>
 </resources>
