@@ -5,17 +5,26 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    private TextView testMessage;
+
+    private FirebaseAdapter firebaseAdapter = new FirebaseAdapter();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
@@ -27,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
+
+
+
             return false;
         }
     };
@@ -36,9 +48,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        mTextMessage = (TextView) findViewById(R.id.message2);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        final Button testButton = (Button) findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                testMessage = findViewById(R.id.firebaseTestMessage);
+                String str = firebaseAdapter.pull();
+                testMessage.setText(str);
+                System.out.println("Testing button...");
+                System.out.println(str);
+            }
+        });
+
     }
 
 }
