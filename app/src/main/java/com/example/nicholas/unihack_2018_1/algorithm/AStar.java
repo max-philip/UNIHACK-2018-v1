@@ -40,6 +40,8 @@ public class AStar {
         evaluatedNodes = new ArrayList<>();
         unevaluatedNodes = new HashMap<>();
         unevaluatedNodes.put(AStar.start, getHCost(AStar.start));
+        cameFrom = new HashMap<>();
+        gCosts = new HashMap<>();
         gCosts.put(AStar.start, 0.0);
 
         while (!unevaluatedNodes.isEmpty()) {
@@ -99,7 +101,18 @@ public class AStar {
      * @return the coordinate with the lowest fCost from unexploredKnownNodes.
      */
     private static Intersection getLowestFCostCoordinate() {
-        return Collections.min(unevaluatedNodes.entrySet(), Map.Entry.comparingByValue()).getKey();
+        Intersection lowestIntersection = null;
+        double lowestFCost = Double.MAX_VALUE;
+
+        for (Intersection currIntersection : unevaluatedNodes.keySet()) {
+            double currFCost = unevaluatedNodes.get(currIntersection);
+            if (currFCost < lowestFCost) {
+                lowestFCost = currFCost;
+                lowestIntersection = currIntersection;
+            }
+        }
+
+        return lowestIntersection;
     }
 
     /**

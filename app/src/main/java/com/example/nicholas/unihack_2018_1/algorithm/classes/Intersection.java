@@ -53,6 +53,6 @@ public class Intersection {
     }
 
     public Intersection[] getNeighbors() {
-        return (Intersection[]) neighbors.values().toArray();
+        return neighbors.values().toArray(new Intersection[0]);
     }
 }

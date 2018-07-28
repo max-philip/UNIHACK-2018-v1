@@ -69,11 +69,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataParser.readData(dataSnapshot);
-//                Coordinate[] testPath = AStar.getBestPath(
-//                        new Coordinate(-37.800449, 144.963938),
-//                        new Coordinate(-37.807675, 144.973077)
-//                );
-                System.out.println("lul");
+                Coordinate[] testPath = AStar.getBestPath(
+                        new Coordinate(-37.800449, 144.963938),
+                        new Coordinate(-37.807675, 144.973077)
+                );
+
+                for (Coordinate c : testPath) {
+                    System.out.printf("Next: (%f, %f)\n", c.getLatitude(), c.getLongitude());
+                }
             }
 
             @Override
