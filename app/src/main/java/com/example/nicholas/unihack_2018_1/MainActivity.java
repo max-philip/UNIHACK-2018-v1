@@ -6,8 +6,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.content.ContentValues.TAG;
+
+import com.example.nicholas.unihack_2018_1.algorithm.DataParser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message2);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        DataParser.readData();
     }
 
     @Override
@@ -65,10 +66,7 @@ public class MainActivity extends AppCompatActivity {
             //            Log.d("Listening", "Listening!");
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                String post = dataSnapshot.child("map").child("points").child("-37800449144963938").child("lat").getValue().toString();
-                Log.d("Testt", post);
-                // ...
+                DataParser.readData(dataSnapshot);
             }
 
             @Override
