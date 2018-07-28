@@ -67,7 +67,7 @@ public class DataParser {
 
             intersections.put(newIntesection.getId(), newIntesection);
             count++;
-            Log.d("Num of roads read in:", Integer.toString(count));
+            Log.d("Num of intersections read in:", Integer.toString(count));
         }
 
         Log.d("Finished:", "Reading intersections");
@@ -94,7 +94,7 @@ public class DataParser {
 
             roads.put(nextRoad.getKey(), newRoadInfo);
             count++;
-            Log.d("Num of points read in:", Integer.toString(count));
+            Log.d("Num of roads read in:", Integer.toString(count));
         }
         Log.d("Finished:", "Reading roads");
     }

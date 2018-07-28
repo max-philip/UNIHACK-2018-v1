@@ -5,28 +5,120 @@ import com.example.nicholas.unihack_2018_1.algorithm.classes.Coordinate;
 import com.example.nicholas.unihack_2018_1.algorithm.classes.Intersection;
 import com.example.nicholas.unihack_2018_1.algorithm.classes.RoadInfo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class AStar {
 
     /** Keep unsafety scalar between 1-20 to prevent less than 0 hcost **/
-    private static double UNSAFETY_SCALAR = 0;
-    private static double HCOST_CONSTANT = 100;
+    private static final double UNSAFETY_SCALAR = 0;
+    private static final double HCOST_CONSTANT = 100;
+    private static final double EARTH_RADIUS_M = 6371000;
 
-//    public double getFCost(Intersection i1, Intersection i2) {
-//
-//
-//
-//    }
+    private static Intersection start;
+    private static Intersection goal;
 
-    public double getHCost(Intersection i1, Intersection i2, Intersection dest) {
+    private static ArrayList<Intersection> evaluatedNodes;
+    private static Map<Intersection, Double> unevaluatedNodes;
+    private static Map<Intersection, Intersection> cameFrom;
+    private static Map<Intersection, Double> gCosts;
 
-        RoadInfo roadInfo = DataParser.roads.get(generateRoadID(i1, i2));
+    /**
+     * Given a starting and ending goal, returns an ordered list of coordinates that provides
+     * the "best" route.
+     * @param start
+     * @param goal
+     * @return
+     */
+    public static Coordinate[] getBestPath(Coordinate start, Coordinate goal) {
+        AStar.start = getClosestIntersection(start);
+        AStar.goal = getClosestIntersection(goal);
 
-        double dist = getDistanceAsMetres(i1.getCoordinate(), dest.getCoordinate());
-        return HCOST_CONSTANT + dist + UNSAFETY_SCALAR * (roadInfo.crime + roadInfo.parks - roadInfo.safety - roadInfo.lights);
+        // Initialize data structures.
+        evaluatedNodes = new ArrayList<>();
+        unevaluatedNodes = new HashMap<>();
+        unevaluatedNodes.put(AStar.start, getHCost(AStar.start));
+        gCosts.put(AStar.start, 0.0);
+
+        while (!unevaluatedNodes.isEmpty()) {
+            Intersection current = getLowestFCostCoordinate();
+
+            if (current.getId().equals(AStar.goal.getId())) {
+                return reconstructPath(current);
+            }
+
+            unevaluatedNodes.remove(current);
+            evaluatedNodes.add(current);
+
+            Intersection[] neighbors = current.getNeighbors();
+            for (Intersection neighbor : neighbors) {
+                if (evaluatedNodes.contains(neighbor)) {
+                    continue;
+                }
+
+                if (!unevaluatedNodes.containsKey(neighbor)) {
+                    unevaluatedNodes.put(neighbor, Double.MAX_VALUE);
+                }
+
+                final double gCost = gCosts.get(current) + getGCost(current, neighbor);
+                if (gCosts.containsKey(neighbor)) {
+                    if (gCost >= gCosts.get(neighbor)) {
+                        continue;
+                    }
+                }
+
+                // This path to 'neighbor' is the best so far. Record it.
+                cameFrom.put(neighbor, current);
+                gCosts.put(neighbor, gCost);
+                final double fCost = gCost + getHCost(neighbor);
+                unevaluatedNodes.put(neighbor, fCost);
+            }
+        }
+
+        // Was unable to find a path. Return null.
+        return null;
+    }
+
+    private static double getGCost(Intersection from, Intersection to) {
+
+        RoadInfo roadInfo = DataParser.roads.get(generateRoadID(from, to));
+
+        double dist = getDistanceAsMetres(from.getCoordinate(), to.getCoordinate());
+        return dist + UNSAFETY_SCALAR * (roadInfo.crime + roadInfo.parks - roadInfo.safety - roadInfo.lights);
 
     }
 
+    private static double getHCost(Intersection i1) {
+        return getDistanceAsMetres(i1.getCoordinate(), AStar.goal.getCoordinate());
+    }
 
+    /**
+     * Returns the coordinate with the lowest fCost from unexploredKnownNodes. Does not remove it.
+     * @return the coordinate with the lowest fCost from unexploredKnownNodes.
+     */
+    private static Intersection getLowestFCostCoordinate() {
+        return Collections.min(unevaluatedNodes.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    /**
+     * Given an ending coordinate, reconstructs the path from 'start' to it, returning the shortest path.
+     * @param end is the ending coordinate.
+     * @return a list of sequential coordinates leading from 'start' to 'end'.
+     */
+    private static Coordinate[] reconstructPath(Intersection end) {
+        ArrayList<Coordinate> path = new ArrayList<>();
+        path.add(AStar.goal.getCoordinate());
+        Intersection current = goal;
+        while (cameFrom.containsKey(current)) {
+            current = cameFrom.get(current);
+            path.add(current.getCoordinate());
+        }
+
+        Collections.reverse(path);
+        return path.toArray(new Coordinate[0]);
+    }
 
     /**
      * Generate our RoadID from two intersects
@@ -34,7 +126,7 @@ public class AStar {
      * @param i2
      * @return
      */
-    private String generateRoadID(Intersection i1, Intersection i2) {
+    private static String generateRoadID(Intersection i1, Intersection i2) {
 
         return (i1.getId().compareTo(i2.getId()) > 0 ? i2.getId() + i1.getId() : i1.getId() + i2.getId());
 
@@ -45,7 +137,7 @@ public class AStar {
      * @param coord
      * @return
      */
-    public Intersection getClosestIntersection(Coordinate coord) {
+    private static Intersection getClosestIntersection(Coordinate coord) {
 
         double shortest = Double.MAX_VALUE;
         Intersection closestIntersection = null;
@@ -59,15 +151,13 @@ public class AStar {
         }
 
         return closestIntersection;
-
     }
 
     /**
      * Calculates the raw euclidean distance between two coordinates in Metres
      * @return
      */
-    public static double getDistanceAsMetres(Coordinate p1, Coordinate p2) {
-        final double earthRadiusM = 6371000;
+    private static double getDistanceAsMetres(Coordinate p1, Coordinate p2) {
 
         double dLat = degToRad(p2.getLatitude()-p1.getLatitude());
         double dLon = degToRad(p2.getLongitude()-p1.getLongitude());
@@ -78,12 +168,11 @@ public class AStar {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        return earthRadiusM * c;
+        return EARTH_RADIUS_M * c;
 
     }
 
-    public static double degToRad(double degrees) {
+    private static double degToRad(double degrees) {
         return degrees * Math.PI / 180;
     }
-
 }

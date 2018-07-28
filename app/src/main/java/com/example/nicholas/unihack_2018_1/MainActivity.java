@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.nicholas.unihack_2018_1.algorithm.AStar;
+import com.example.nicholas.unihack_2018_1.algorithm.classes.Coordinate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -67,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataParser.readData(dataSnapshot);
+//                Coordinate[] testPath = AStar.getBestPath(
+//                        new Coordinate(-37.800449, 144.963938),
+//                        new Coordinate(-37.807675, 144.973077)
+//                );
+                System.out.println("lul");
             }
 
             @Override
