@@ -1,4 +1,4 @@
-package com.example.nicholas.unihack_2018_1.algorithm.classes;
+package com.example.zacharyho.myunihack;
 
 public class RoadInfo {
     public final float crime;

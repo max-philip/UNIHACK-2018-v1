@@ -8,13 +8,7 @@ import android.support.annotation.NonNull;
 import org.json.*;
 
 import com.google.gson.JsonElement;
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.api.matrix.v1.MapboxMatrix;
 import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.LineString;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -146,46 +140,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
-    public String drawAll()  throws Exception{
-        String routeStr = "";
-
-        String httpsURL = createRequest("walking", "-37.802078,144.966681", "-37.800748,144.966905");
-        URL myUrl = new URL(httpsURL);
-        HttpsURLConnection conn = (HttpsURLConnection)myUrl.openConnection();
-        InputStream is = conn.getInputStream();
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-
-        String inputLine;
-
-        while ((inputLine = br.readLine()) != null) {
-            routeStr = inputLine;
-        }
-
-        br.close();
-
-        JSONObject obj = new JSONObject(routeStr);
-        String coordinates = obj.getJSONObject("route").getString("coordinates");
-
-        JSONArray arr = obj.getJSONArray("posts");
-        for (int i = 0; i < arr.length(); i++)
-        {
-            String post_id = arr.getJSONObject(i).getString("post_id");
-        }
-
-    }
-
-    private String createRequest(String profile, String coodinate1, String coodinate2) {
-        String key = "access_token=pk.eyJ1IjoicmRpYW9zdHVkZW50IiwiYSI6ImNqazU5Y3dxMDBtenMzcHBqdjlncWt5YTYifQ.K8YgUZPXPJ6xwuJrFoyM3g";
-
-        String httpStr = "https://api.mapbox.com/directions/v5/mapbox/";
-        httpStr = httpStr + coodinate1 + ";" + coodinate2 + "?geometries=geojson&" + key;
-
-        return httpStr;
-    }
-
-
 
 
     public String drawAll()  throws Exception{

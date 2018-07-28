@@ -1,4 +1,4 @@
-package com.example.nicholas.unihack_2018_1.algorithm.classes;
+package com.example.zacharyho.myunihack;
 
 /**
  * This represents a real coordinate.

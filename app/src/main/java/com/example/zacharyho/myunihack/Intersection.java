@@ -1,4 +1,4 @@
-package com.example.nicholas.unihack_2018_1.algorithm.classes;
+package com.example.zacharyho.myunihack;
 
 import java.util.HashMap;
 import java.util.Locale;

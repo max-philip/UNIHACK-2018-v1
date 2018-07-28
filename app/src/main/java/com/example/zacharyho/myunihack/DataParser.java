@@ -1,9 +1,7 @@
-package com.example.nicholas.unihack_2018_1.algorithm;
+package com.example.zacharyho.myunihack;
 
 import android.util.Log;
 
-import com.example.nicholas.unihack_2018_1.algorithm.classes.Intersection;
-import com.example.nicholas.unihack_2018_1.algorithm.classes.RoadInfo;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;

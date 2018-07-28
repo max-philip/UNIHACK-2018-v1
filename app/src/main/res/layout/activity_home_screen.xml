@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:text="MAP"
         tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="267dp" />
+        tools:layout_editor_absoluteY="267dp"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>

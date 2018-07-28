@@ -11,15 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.nicholas.unihack_2018_1.algorithm.AStar;
-import com.example.nicholas.unihack_2018_1.algorithm.classes.Coordinate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.content.ContentValues.TAG;
-
-import com.example.nicholas.unihack_2018_1.algorithm.DataParser;
 
 
 public class HomeScreen extends AppCompatActivity {
