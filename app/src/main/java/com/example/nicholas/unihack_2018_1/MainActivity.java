@@ -4,18 +4,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-
     private TextView testMessage;
-
-    private FirebaseAdapter firebaseAdapter = new FirebaseAdapter();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,18 +55,30 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message2);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        final Button testButton = (Button) findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                testMessage = findViewById(R.id.firebaseTestMessage);
-                String str = firebaseAdapter.pull();
-                testMessage.setText(str);
-                System.out.println("Testing button...");
-                System.out.println(str);
-            }
-        });
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        ValueEventListener postListener = new ValueEventListener() {
+            //            Log.d("Listening", "Listening!");
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                String post = dataSnapshot.child("map").child("points").child("-37800449144963938").child("lat").getValue().toString();
+                Log.d("Testt", post);
+                // ...
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+
+        FirebaseAdapter.myRef.addListenerForSingleValueEvent(postListener);
+    }
 }
